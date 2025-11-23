@@ -41,32 +41,30 @@ jobs:
        run: docker build -t $GITHUB_SHA .
 
 
-    
-
      - name: Install Trivy
-        uses: aquasecurity/trivy-action@0.20.0
-        with:
-          scan-type: 'image'
-          image-ref: '$GITHUB_SHA'
-          format: 'table'
-          timeout: '15m'
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-          exit-code: '1'  # fail pipeline if vulnerabilities found
-          ignore-unfixed: true
+       uses: aquasecurity/trivy-action@0.20.0
+       with:
+        scan-type: 'image'
+        image-ref: '$GITHUB_SHA'
+        format: 'table'
+        timeout: '15m'
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+        exit-code: '1'  # fail pipeline if vulnerabilities found
+        ignore-unfixed: true
 
-      - name: Upload Trivy Scan Report (SARIF)
-        uses: aquasecurity/trivy-action@0.20.0
-        with:
-          scan-type: 'image'
-          image-ref: '$GITHUB_SHA'
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+     - name: Upload Trivy Scan Report (SARIF)
+       uses: aquasecurity/trivy-action@0.20.0
+       with:
+         scan-type: 'image'
+         image-ref: '$GITHUB_SHA'
+         format: 'sarif'
+        output: 'trivy-results.sarif'
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: trivy-report
-          path: trivy-results.sarif    
+     - name: Upload artifact
+       uses: actions/upload-artifact@v4
+       with:
+         name: trivy-report
+         path: trivy-results.sarif    
 
 
