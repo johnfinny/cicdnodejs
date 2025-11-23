@@ -34,3 +34,9 @@ jobs:
        uses: SonarSource/sonarqube-scan-action@v6
        env:
          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+
+    # Build docker image
+     - name: Build docker image
+       run: docker build -t $GITHUB_SHA .
+
