@@ -38,14 +38,14 @@ jobs:
 
     # Build docker image
      - name: Build docker image
-       run: docker build -t $GITHUB_SHA .
+       run: docker build -t myapp .
 
 
      - name: Install Trivy
        uses: aquasecurity/trivy-action@0.20.0
        with:
          scan-type: 'image'
-         image-ref: '$GITHUB_SHA'
+         image-ref: 'myapp'
          format: 'table'
          timeout: '15m'
          vuln-type: 'os,library'
@@ -57,7 +57,7 @@ jobs:
        uses: aquasecurity/trivy-action@0.20.0
        with:
          scan-type: 'image'
-         image-ref: '$GITHUB_SHA'
+         image-ref: 'myapp'
          format: 'sarif'
          output: 'trivy-results.sarif'
 
