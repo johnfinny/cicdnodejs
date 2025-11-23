@@ -40,3 +40,8 @@ jobs:
      - name: Build docker image
        run: docker build -t $GITHUB_SHA .
 
+
+     - name: Trivy scan 
+       run: docker run --r, -v /var/run/docker.soc:/var/run/docker.sock aquasec/trivy:latest image $GITHUB_SHA
+
+
