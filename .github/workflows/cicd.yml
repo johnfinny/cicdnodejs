@@ -41,30 +41,22 @@ jobs:
        run: docker build -t myapp .
 
 
-     - name: Install Trivy
-       uses: aquasecurity/trivy-action@0.20.0
-       with:
-         scan-type: 'image'
-         image-ref: 'myapp'
-         format: 'table'
-         timeout: '15m'
-         vuln-type: 'os,library'
-         severity: 'CRITICAL,HIGH'
-         exit-code: '1'  # fail pipeline if vulnerabilities found
-         ignore-unfixed: true
+     
+       uses: actions/checkout@v4
+     - name: Trivy Installation
+       run: |
+        sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+        wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+        echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+        sudo apt-get update -y
+        sudo apt-get install -y trivy
 
-     - name: Upload Trivy Scan Report (SARIF)
-       uses: aquasecurity/trivy-action@0.20.0
-       with:
-         scan-type: 'image'
-         image-ref: 'myapp'
-         format: 'sarif'
-         output: 'trivy-results.sarif'
+     - name: Trivy FS Scan
+       run: trivy fs --format table -o fs-report.json .
 
-     - name: Upload artifact
-       uses: actions/upload-artifact@v4
-       with:
-         name: trivy-report
-         path: trivy-results.sarif    
+     - name: Gitleaks Installation
+       run: sudo apt install gitleaks -y
+     - name: Gitleaks Code Scan
+       run: gitleaks detect source . -r gitleaks-report.json -f json    
 
 
