@@ -59,4 +59,15 @@ jobs:
      - name: Gitleaks Code Scan
        run: gitleaks detect source . -r gitleaks-report.json -f json    
 
+     
+     - name: setup Aws Credentials
+       users: aws-actions/configure-aws-credentials@v2
+       with:
+         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+         aws-secret-key-id: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+         aws-region: ${{ secrets.AWS_REGION }}  
 
+     - name: Login to AWS ECR
+       run: |
+         aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REPOSITORY_URI }}
+         
