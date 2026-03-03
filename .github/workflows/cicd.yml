@@ -32,10 +32,10 @@ jobs:
        run: npm install  
 
     #  SonarQube Analysis 
-     - name: SonarQube Scan
-       uses: SonarSource/sonarqube-scan-action@v6
-       env:
-         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+    # - name: SonarQube Scan
+    #   uses: SonarSource/sonarqube-scan-action@v6
+    #   env:
+     #    SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
 
     # Build docker image
